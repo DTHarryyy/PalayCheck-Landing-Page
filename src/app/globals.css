@@ -1,0 +1,147 @@
+@import "tailwindcss";
+
+/*
+ * Brand tokens, transcribed 1:1 from the app's lib/theme/tokens.dart so the
+ * site and the app share one palette.
+ */
+@theme {
+  --color-cream: #f5ead8; /* AppColors.bg */
+  --color-sand: #ebddc5; /* AppColors.surface */
+  --color-paper: #f8f1e3; /* AppColors.paperPlate */
+  --color-ink: #201e1d; /* AppColors.text */
+  --color-night: #1a1917; /* AppColors.scanScreenBg */
+  --color-leaf: #b6e07a; /* AppColors.scanLine */
+  --color-gold: #d9a441;
+  --color-verified: #5e8a6b;
+  --color-alert: #a3432b;
+
+  --color-clay: #c67139; /* AppColors.accent */
+  --color-clay-100: #fff2eb;
+  --color-clay-200: #ffe1d0;
+  --color-clay-300: #ffc6a5;
+  --color-clay-400: #f6a06b;
+  --color-clay-500: #d67f48;
+  --color-clay-600: #b2622d;
+  --color-clay-700: #8c491a;
+  --color-clay-800: #643312;
+  --color-clay-900: #402310;
+
+  --color-olive: #7a8a5e; /* AppColors.accent2 */
+  --color-olive-100: #f0fae1;
+  --color-olive-200: #e1eecc;
+  --color-olive-300: #ccdbb2;
+  --color-olive-400: #aebf92;
+  --color-olive-500: #8fa073;
+  --color-olive-600: #728157;
+  --color-olive-700: #56633f;
+  --color-olive-800: #3d472b;
+  --color-olive-900: #272e1b;
+
+  --color-earth-100: #f9f4ed;
+  --color-earth-200: #eee7db;
+  --color-earth-300: #dcd3c4;
+  --color-earth-400: #c0b6a5;
+  --color-earth-500: #a19786;
+  --color-earth-600: #82796a;
+  --color-earth-700: #645c50;
+  --color-earth-800: #474238;
+  --color-earth-900: #2e2b25;
+
+  --animate-scan: scan 3.2s ease-in-out infinite;
+  --animate-drift: drift 18s ease-in-out infinite alternate;
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-fade-up: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scan {
+    0%,
+    100% {
+      transform: translateY(0%);
+    }
+    50% {
+      transform: translateY(var(--scan-distance, 300px));
+    }
+  }
+
+  @keyframes drift {
+    from {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    to {
+      transform: translate3d(4%, -6%, 0) scale(1.12);
+    }
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+@theme inline {
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 5rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    @apply bg-cream font-sans text-ink antialiased;
+  }
+
+  ::selection {
+    @apply bg-leaf text-night;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-clay-700;
+  }
+}
+
+/* Animate <details> open/close where supported (progressive enhancement). */
+@supports (interpolate-size: allow-keywords) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+
+  details::details-content {
+    block-size: 0;
+    overflow: clip;
+    transition:
+      block-size 300ms ease,
+      content-visibility 300ms allow-discrete;
+  }
+
+  details[open]::details-content {
+    block-size: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    details::details-content {
+      transition: none;
+    }
+  }
+}
